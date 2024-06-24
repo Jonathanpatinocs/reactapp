@@ -1,16 +1,19 @@
-const Hello = () => {
+const Hello = (props) => {
+  console.log(props)
   return (
     <div>
-      <p>Hello World</p>
+      <p>Hello {props.name}, you are {props.age}</p>
     </div>
   )
 }
 const App = () => {
-  
+  const friends = [
+    'peter',
+    'Maya'
+  ]
   return (
     <div>
-      <h1>Greetings</h1>
-      <Hello />
+      <p>{friends}</p>
     </div>
   )
 }
