@@ -1,9 +1,36 @@
 import { useState } from 'react'
 
 const Button = ({setFeedback, text}) => {
-
   return (
     <button onClick={setFeedback}>{text}</button>
+  )
+}
+const StatisticsLine = ({text, value}) => {
+  return <tr><td>{text}: {value}</td></tr>
+}
+const Statistics = ({feedback}) => {
+  const calcTotal = feedback.good + feedback.bad + feedback.neutral
+  const goodScore = feedback.good * 1
+  const neutralScore = feedback.neutral * 0
+  const badScore = feedback.bad * -1
+  const calcAverage = (goodScore + badScore + neutralScore) / calcTotal
+  const calcPositive = feedback.good / calcTotal
+  if( calcTotal === 0) {
+    return <p>No feedback given</p>
+  }
+  return(
+    <div>
+      <table>
+        <tbody>
+        <StatisticsLine text = 'good' value={feedback.good}/>
+        <StatisticsLine text = 'Bad' value={feedback.bad}/>
+        <StatisticsLine text = 'Neutral' value={feedback.neutral}/>
+        <StatisticsLine text = 'All' value={calcTotal}/>
+        <StatisticsLine text = 'Average' value={calcAverage}/>
+        <StatisticsLine text = 'Positive' value={calcPositive}/>
+        </tbody>
+      </table> 
+    </div>
   )
 }
 const App = () => {
@@ -17,8 +44,7 @@ const App = () => {
       ...feedback,
       good: feedback.good + 1
       
-  })
-  
+    })
   }
   const badFeedback = () => {
     setFeedback({
@@ -34,14 +60,6 @@ const App = () => {
     })
     console.log(feedback)
   }
-  const calcTotal = feedback.good + feedback.bad + feedback.neutral
-    
-    const goodScore = feedback.good * 1
-    const neutralScore = feedback.neutral * 0
-    const badScore = feedback.bad * -1
-    const calcAverage = (goodScore + badScore + neutralScore) / calcTotal
-
-  const calcPositive = feedback.good / calcTotal
 
   return (
     <div>
@@ -50,12 +68,7 @@ const App = () => {
       <Button setFeedback={neutralFeedback} text='Neutral'/>
       <Button setFeedback={badFeedback} text='Bad'/>
       <h1>Statistics</h1>
-      <p>Good: {feedback.good}</p>
-      <p>Bad: {feedback.bad}</p>
-      <p>Neutral: {feedback.neutral}</p>
-      <p>All: {calcTotal}</p>
-      <p>Average: {calcAverage}</p>
-      <p>Positive: {calcPositive}</p>
+      <Statistics feedback={feedback}/>
 
     </div>
   )
