@@ -19,8 +19,15 @@ const Header = ({course}) => {
     
     )
   }
-  const Footer = ({parts}) => {
-    const num = parts[0].exercises + parts[1].exercises + parts[2].exercises
+  const Footer = ({course}) => {
+    const num = course.parts.reduce((s,p) => {
+        console.log(s,p.exercises);
+        return (
+            s.exercises + p.exercises, 0
+        )
+        
+    })
+    console.log('num', num);
     return (
       <p>Number of exercises  {num}</p>
     )
@@ -34,6 +41,7 @@ const Course = ({course})=> {
         <div>
             <Header course={course}/>
             <Content course ={course}/>
+            <Footer course={course}/>
         </div>
     )
 }
