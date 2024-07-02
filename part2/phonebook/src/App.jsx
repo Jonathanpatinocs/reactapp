@@ -7,8 +7,13 @@ function App(props) {
   const [newName, setNewName] = useState('')
 
   const addPhoneName = (event)=> {
+
     event.preventDefault()
+    if (phoneBook.map(entry => entry.name.toLowerCase()).includes(newName.toLowerCase())) {
+      alert(`${newName} is already added to the phonebook`)
+    } else {
     setPhoneBook(phoneBook.concat({id: phoneBook.length + 1, name: newName}))
+    }
     setNewName('')
   }
   const handleNewName = (event) => {
