@@ -1,7 +1,7 @@
 import Course from "./components/Course"
 
 const App = () => {
-  const course = {
+  const courses = [{
     id: 1,
     name: 'Half Stack application development',
     parts: [
@@ -20,12 +20,31 @@ const App = () => {
         exercises: 14,
         id:3
       }
-    ]
-  }
+    ]},
+    {
+      id: 2,
+      name:'Node.JS',
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'MiddleWares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+
+  ]
+  
   
   return(
     <div>
-      <Course course = {course}/>
+      <Course course = {courses[0]}/>
+      <Course course = {courses[1]}/>
     </div>
   )
 }

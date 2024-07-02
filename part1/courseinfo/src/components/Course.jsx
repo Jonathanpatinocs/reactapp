@@ -20,14 +20,8 @@ const Header = ({course}) => {
     )
   }
   const Footer = ({course}) => {
-    const num = course.parts.reduce((s,p) => {
-        console.log(s,p.exercises);
-        return (
-            s.exercises + p.exercises, 0
-        )
+    const num = course.parts.reduce((s,p) => s + p.exercises ,0)
         
-    })
-    console.log('num', num);
     return (
       <p>Number of exercises  {num}</p>
     )
