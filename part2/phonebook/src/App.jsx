@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Name from './components/PhoneBookEntry'
+import axios from 'axios'
 
 const Filter = ({handleFilter, filter}) => {
 
@@ -16,13 +17,17 @@ const PhoneBookView = ({phoneBook, filter}) => {
   )
 }
 
-function App(props) {
+function App() {
 
-  const [phoneBook, setPhoneBook] = useState(props.phoneBook)
+  const [phoneBook, setPhoneBook] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhoneNumber, setNewPhoneNumber] = useState('')
   const [filter, setFilter] = useState('')
 
+  useEffect(()=> {
+    axios.get('http://localhost:3001/phoneBook')
+    .then(response => setPhoneBook(response.data))
+  },[])
   const handleFilter = (event) => {
     setFilter(event.target.value)
   }
