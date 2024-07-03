@@ -14,6 +14,7 @@ const Votes = ({votes}) => {
 const HighestVotedAncedote = ({points, anecdote})=> {
 
   return (
+
     <div>
     <h1>Highest voted Ancedote</h1>
     <p>{anecdote}</p>
