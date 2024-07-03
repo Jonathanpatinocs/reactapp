@@ -1,5 +1,5 @@
-const Name = ({name}) => {
-    return <li>{name}</li>
+const Name = ({name, number}) => {
+    return <li>{name}, {number}</li>
 }
 
 

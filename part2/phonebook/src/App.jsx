@@ -1,40 +1,74 @@
 import { useState } from 'react'
 import Name from './components/PhoneBookEntry'
 
+const Filter = ({handleFilter, filter}) => {
+
+  return(
+    <input onChange={handleFilter} value={filter}/>
+  )
+  }
+
+const PhoneBookView = ({phoneBook, filter}) => {
+  return (
+    phoneBook.filter(entry => entry.name.toLowerCase().includes(filter)).map(phoneEntry => 
+      <Name name={phoneEntry.name} key={phoneEntry.id} number = {phoneEntry.number}/>
+    )
+  )
+}
+
 function App(props) {
 
   const [phoneBook, setPhoneBook] = useState(props.phoneBook)
   const [newName, setNewName] = useState('')
+  const [newPhoneNumber, setNewPhoneNumber] = useState('')
+  const [filter, setFilter] = useState('')
+
+  const handleFilter = (event) => {
+    setFilter(event.target.value)
+  }
 
   const addPhoneName = (event)=> {
-
     event.preventDefault()
-    if (phoneBook.map(entry => entry.name.toLowerCase()).includes(newName.toLowerCase())) {
-      alert(`${newName} is already added to the phonebook`)
-    } else {
-    setPhoneBook(phoneBook.concat({id: phoneBook.length + 1, name: newName}))
-    }
     setNewName('')
+  }
+  const addPhoneNumber = (event) => {
+    event.preventDefault()
+    setNewPhoneNumber('')
   }
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
+  const handleNewNumber = (event) => {
+    setNewPhoneNumber(event.target.value)
+  }
+  const add = (event) => {
+    addPhoneName(event)
+    addPhoneNumber(event)
+    if (phoneBook.map(entry => entry.name.toLowerCase()).includes(newName.toLowerCase())) {
+      alert(`${newName} is already added to the phonebook`)
+    } else {
+    setPhoneBook(phoneBook.concat({id: phoneBook.length + 1, name: newName, number: newPhoneNumber}))
+    }
+  }
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
+      <Filter handleFilter={handleFilter} filter={filter}/>
+      <h2>Add A New</h2>
+      <form onSubmit={add}>
         <div>
-          name: <input placeholder='name' value={newName} onChange={handleNewName}/>
+          name: <input placeholder='name' value={newName} onChange={handleNewName} required/>
         </div>
         <div>
-          <button type='submit' onClick={addPhoneName}>Add</button>
+          number: <input type='tel' placeholder='123-456-7890' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' onChange={handleNewNumber} value={newPhoneNumber} required/>
+        </div>
+        <div>
+          <button type='submit'>Add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       <ul>
-        {phoneBook.map(phoneEntry => 
-          <Name name={phoneEntry.name} key={phoneEntry.id}/>
-        )}
+        <PhoneBookView phoneBook={phoneBook} filter={filter}/>
       </ul>
       
     </div>
