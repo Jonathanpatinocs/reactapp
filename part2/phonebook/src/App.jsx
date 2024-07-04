@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import Name from './components/PhoneBookEntry'
-import axios from 'axios'
+
+import phonebookEntry from './services/phonebookEntry'
 
 const Filter = ({handleFilter, filter}) => {
 
@@ -9,10 +11,10 @@ const Filter = ({handleFilter, filter}) => {
   )
   }
 
-const PhoneBookView = ({phoneBook, filter}) => {
+const PhoneBookView = ({phoneBook, filter, deleteEntry}) => {
   return (
     phoneBook.filter(entry => entry.name.toLowerCase().includes(filter)).map(phoneEntry => 
-      <Name name={phoneEntry.name} key={phoneEntry.id} number = {phoneEntry.number}/>
+      <Name name={phoneEntry.name} key={phoneEntry.id} number = {phoneEntry.number} deleteEntry={()=>deleteEntry(phoneEntry.id)}/>
     )
   )
 }
@@ -25,8 +27,8 @@ function App() {
   const [filter, setFilter] = useState('')
 
   useEffect(()=> {
-    axios.get('http://localhost:3001/phoneBook')
-    .then(response => setPhoneBook(response.data))
+    phonebookEntry.getAll()
+    .then(response => setPhoneBook(response))
   },[])
   const handleFilter = (event) => {
     setFilter(event.target.value)
@@ -49,11 +51,30 @@ function App() {
   const add = (event) => {
     addPhoneName(event)
     addPhoneNumber(event)
+    const newPhoneEntry = 
+    {
+      id: phoneBook.length + 1,
+      name: newName,
+      number: newPhoneNumber
+    }
+    console.log(newPhoneEntry);
     if (phoneBook.map(entry => entry.name.toLowerCase()).includes(newName.toLowerCase())) {
       alert(`${newName} is already added to the phonebook`)
     } else {
-    setPhoneBook(phoneBook.concat({id: phoneBook.length + 1, name: newName, number: newPhoneNumber}))
+    phonebookEntry
+    .create(newPhoneEntry)
+    .then(phoneEntry => {
+      setPhoneBook(phoneBook.concat(phoneEntry))
+    })
     }
+  }
+  const deleteEntry = (id) => {
+    const entry = phoneBook.find(entry => entry.id === id)
+    console.log(entry);
+    phonebookEntry
+    .deleteEntry(entry)
+    .catch(error => console.log(error))
+
   }
   return (
     <div>
@@ -73,7 +94,7 @@ function App() {
       </form>
       <h2>Numbers</h2>
       <ul>
-        <PhoneBookView phoneBook={phoneBook} filter={filter}/>
+        <PhoneBookView phoneBook={phoneBook} filter={filter} deleteEntry={deleteEntry}/>
       </ul>
       
     </div>
