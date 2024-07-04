@@ -72,7 +72,11 @@ function App() {
     const entry = phoneBook.find(entry => entry.id === id)
     console.log(entry);
     phonebookEntry
-    .deleteEntry(entry)
+    .deleteEntry(entry).then(response => {
+      console.log(response);
+    }
+
+    )
     .catch(error => console.log(error))
 
   }
