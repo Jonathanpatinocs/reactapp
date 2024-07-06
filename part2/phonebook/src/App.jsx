@@ -20,11 +20,12 @@ const PhoneBookView = ({phoneBook, filter, deleteEntry}) => {
 }
 
 function App() {
-
+  
   const [phoneBook, setPhoneBook] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhoneNumber, setNewPhoneNumber] = useState('')
   const [filter, setFilter] = useState('')
+
 
   useEffect(()=> {
     phonebookEntry.getAll()
@@ -33,7 +34,9 @@ function App() {
   const handleFilter = (event) => {
     setFilter(event.target.value)
   }
+  useEffect(() => setPhoneBookId(phoneBook.length + 1))
 
+  const [phonebookId, setPhoneBookId] = useState(0)
   const addPhoneName = (event)=> {
     event.preventDefault()
     setNewName('')
@@ -48,15 +51,28 @@ function App() {
   const handleNewNumber = (event) => {
     setNewPhoneNumber(event.target.value)
   }
+  const getId = () => {
+    let id = 0
+    if (phoneBook.length >= 1) {
+      const phoneBookCopy = phoneBook.concat(phoneBook)
+      const lastBook = phoneBookCopy.pop()
+      id = +lastBook.id + 1
+    } 
+      
+    return id
+  }
   const add = (event) => {
+    const id = getId()
+    
     addPhoneName(event)
     addPhoneNumber(event)
     const newPhoneEntry = 
     {
-      id: phoneBook.length + 1,
+      id: `${id}`,
       name: newName,
       number: newPhoneNumber
     }
+    setPhoneBookId(phonebookId + 1)
     console.log(newPhoneEntry);
     if (phoneBook.map(entry => entry.name.toLowerCase()).includes(newName.toLowerCase())) {
       alert(`${newName} is already added to the phonebook`)
@@ -74,6 +90,10 @@ function App() {
     phonebookEntry
     .deleteEntry(entry).then(response => {
       console.log(response);
+      
+        phonebookEntry.getAll()
+        .then(response => setPhoneBook(response))
+
     }
 
     )

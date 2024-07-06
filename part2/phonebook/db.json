@@ -1,44 +1,14 @@
 {
   "phoneBook": [
     {
-      "id": 1,
-      "name": "Jerry",
-      "number": "404-123-7643"
+      "id": "2",
+      "name": "sdklfjl",
+      "number": "123-122-1234"
     },
     {
-      "id": 2,
-      "name": "Sarah",
-      "number": "555-555-5555"
-    },
-    {
-      "id": 3,
-      "name": "Harry",
-      "number": "187-362-6534"
-    },
-    {
-      "id": 4,
-      "name": "Garry",
-      "number": "187-362-6534"
-    },
-    {
-      "id": 5,
-      "name": "John",
-      "number": "187-362-6534"
-    },
-    {
-      "id": 6,
-      "name": "jhn",
-      "number": "123-124-1235"
-    },
-    {
-      "id": 7,
-      "name": "sdf",
-      "number": "123-124-1235"
-    },
-    {
-      "id": 8,
-      "name": "kjlk",
-      "number": "123-467-4564"
+      "id": "3",
+      "name": "dsflkjsldkfjlsdkf",
+      "number": "123-122-1234"
     }
   ]
 }
