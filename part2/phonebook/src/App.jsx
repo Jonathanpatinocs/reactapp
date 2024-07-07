@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import Name from './components/PhoneBookEntry'
-
+import Notification from './components/Notification'
 import phonebookEntry from './services/phonebookEntry'
 
 const Filter = ({handleFilter, filter}) => {
@@ -19,6 +19,8 @@ const PhoneBookView = ({phoneBook, filter, deleteEntry}) => {
   )
 }
 
+
+
 function App() {
   
   const [phoneBook, setPhoneBook] = useState([])
@@ -26,6 +28,9 @@ function App() {
   const [newPhoneNumber, setNewPhoneNumber] = useState('')
   const [filter, setFilter] = useState('')
 
+  const [notification, setNotification] = useState(null)
+  const [notificationType, setNotificationType] = useState(null)
+  
 
   useEffect(()=> {
     phonebookEntry.getAll()
@@ -75,34 +80,44 @@ function App() {
     setPhoneBookId(phonebookId + 1)
     console.log(newPhoneEntry);
     if (phoneBook.map(entry => entry.name.toLowerCase()).includes(newName.toLowerCase())) {
-      alert(`${newName} is already added to the phonebook`)
+      setNotification(`${newName} has already been added`)
+      setNotificationType('error')
     } else {
     phonebookEntry
     .create(newPhoneEntry)
     .then(phoneEntry => {
       setPhoneBook(phoneBook.concat(phoneEntry))
     })
+    setNotification(`${newName} has been added succesfully`)
     }
+    setTimeout(()=>{
+      setNotification(null)
+      setNotificationType(null)
+    }, 5000)
   }
   const deleteEntry = (id) => {
     const entry = phoneBook.find(entry => entry.id === id)
     console.log(entry);
     phonebookEntry
     .deleteEntry(entry).then(response => {
-      console.log(response);
+          console.log(response);
+          setNotification(`${entry.name} has been successfully deleted`)
       
         phonebookEntry.getAll()
         .then(response => setPhoneBook(response))
-
     }
 
     )
     .catch(error => console.log(error))
+    setTimeout(()=> {
+      setNotification(null)
+  }, 5000)
 
   }
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message = {notification} type={notificationType}/>
       <Filter handleFilter={handleFilter} filter={filter}/>
       <h2>Add A New</h2>
       <form onSubmit={add}>
