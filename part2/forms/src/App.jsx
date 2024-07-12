@@ -31,7 +31,7 @@ const App = () => {
     const noteObject = {
       content: newNote,
       important: Math.random() > 0.5,
-      id: notes.length + 1
+      id: String(notes.length + 1)
     }
     noteService
     .create(noteObject)
@@ -57,7 +57,8 @@ const App = () => {
     .then(note => {
       setNotes(notes.map(n => n.id !== id ? n : note))
     })
-    .catch(error => {
+    // eslint-disable-next-line no-unused-vars
+    .catch((error) => {
       setErrorMessage(
         `Note ${note.content} was already removed from the server`
       )
